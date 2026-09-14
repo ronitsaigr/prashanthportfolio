@@ -13,10 +13,34 @@ type UseCase = {
 }
 
 const proof = [
-  { metric: '27K → 400K+', label: 'Audience growth', detail: 'Scaled an education YouTube ecosystem by connecting content, audience insight, product priorities and conversion pathways.' },
+  { metric: '27K → 400K+', label: 'Audience growth', detail: 'Scaled a Karnataka education channel by linking content strategy, audience insight, product pathways and conversion.' },
   { metric: '+26%', label: 'Sales efficiency', detail: 'Improved revenue operations through CRM redesign, lead scoring, follow-up systems and performance visibility.' },
-  { metric: '900 / 3 MO', label: 'GTM execution', detail: 'Took a physical learning product from concept through pricing, vendors, launch, sales and fulfilment.' },
-  { metric: '₹6 CR / MO', label: 'Revenue operations', detail: 'Supported high-volume revenue operations with forecasting, conversion reviews, capacity planning and payment visibility.' },
+  { metric: '900 IN 3 MONTHS', label: 'Product GTM', detail: 'Took Powerguides from concept through pricing, vendors, launch, sales and fulfilment.' },
+  { metric: '₹6 CR / MONTH', label: 'Revenue operations', detail: 'Supported high-volume international admissions through forecasting, conversion reviews, capacity planning and payment visibility.' },
+]
+
+const transformations = [
+  {
+    tag: 'GROWTH SYSTEM',
+    title: 'Turned content reach into a full-funnel education engine.',
+    context: 'A growing audience needed a clearer path from discovery to trust, product and enrolment.',
+    action: 'Connected YouTube, SEO, audience insight, program positioning, lead capture and CRM follow-up.',
+    result: '27K → 400K+ subscribers',
+  },
+  {
+    tag: 'REVENUE SYSTEM',
+    title: 'Made lead prioritisation and follow-up measurable.',
+    context: 'High lead volume created uneven follow-up, weak visibility and avoidable manager effort.',
+    action: 'Redesigned CRM logic, lead scoring, dashboards, follow-up discipline and conversion reviews.',
+    result: '+26% sales efficiency',
+  },
+  {
+    tag: 'PRODUCT + GTM',
+    title: 'Shipped a learning product from idea to market.',
+    context: 'Students needed a practical, outcome-oriented study product beyond classes alone.',
+    action: 'Owned product concept, pricing, vendors, launch, sales coordination and fulfilment.',
+    result: '900 Powerguides / 3 months',
+  },
 ]
 
 const useCases: UseCase[] = [
@@ -104,6 +128,27 @@ const useCases: UseCase[] = [
     stack: ['ElevenLabs', 'Suno', 'LLMs', 'Audio workflow'],
     flow: ['Creative brief', 'Write / prompt', 'Generate', 'Evaluate', 'Refine + publish'],
   },
+  {
+    id: 'manager-copilot', category: 'Operations', title: 'AI Manager Command Center', status: 'APPLIED',
+    summary: 'Turn counsellor-level funnel data, pending follow-ups and daily activity into a focused manager view with individual coaching priorities.',
+    outcome: 'Clearer daily priorities, faster intervention and less time spent assembling reports manually.',
+    stack: ['CRM', 'Sheets', 'LLMs', 'Slack', 'Automation'],
+    flow: ['Ingest activity', 'Score funnel health', 'Flag risk', 'Draft coaching brief', 'Manager reviews + acts'],
+  },
+  {
+    id: 'roleplay-simulator', category: 'Revenue', title: 'AI Roleplay + Conversation Simulator', status: 'APPLIED',
+    summary: 'Create realistic prospect personas, objections and evaluation rubrics so teams can practise discovery and receive consistent feedback.',
+    outcome: 'More deliberate practice, faster readiness and coaching based on observable call behaviours.',
+    stack: ['LLMs', 'Voice', 'Transcription', 'Rubrics', 'Knowledge base'],
+    flow: ['Choose persona', 'Run simulation', 'Transcribe', 'Score behaviours', 'Generate practice plan'],
+  },
+  {
+    id: 'opportunity-agent', category: 'Build', title: 'Opportunity Discovery + Application Agent', status: 'PROTOTYPED',
+    summary: 'Find relevant roles, score fit, prevent duplicates and generate tailored application assets while keeping final submission under human control.',
+    outcome: 'A repeatable agentic workflow for high-quality opportunity discovery without spray-and-pray applications.',
+    stack: ['Search', 'LLMs', 'Automation', 'Email', 'Sheets / database'],
+    flow: ['Discover roles', 'Verify eligibility', 'Score fit', 'Tailor assets', 'Human approval + send'],
+  },
 ]
 
 const capabilities = [
@@ -115,26 +160,30 @@ const capabilities = [
   ['Measurement', 'Tie the system back to time, cost, conversion, quality, adoption or revenue.'],
 ]
 
-const askAnswers: Record<string, { title: string; answer: string; evidence: string }> = {
+const askAnswers: Record<string, { title: string; answer: string; evidence: string; proof: string[] }> = {
   'What makes you different from an AI tools person?': {
-    title: 'I start with the operating system, not the tool.',
-    answer: 'My base is business ownership: growth, revenue, CRM, operations, people, product thinking and P&L. AI is a leverage layer I add after understanding where context disappears, decisions slow down or work repeats.',
-    evidence: 'That is why this portfolio shows business outcomes and operating depth before the tool stack.',
+    title: 'I understand the business before I automate it.',
+    answer: 'My base is business ownership across growth, revenue, CRM, operations, people, product thinking and P&L. I use AI after finding where context disappears, decisions slow down or work repeats.',
+    evidence: 'The difference is operating judgment: choosing what should change, where a human stays in control and which business metric proves the system worked.',
+    proof: ['7+ years operating depth', '100+ people led', 'P&L + full-funnel ownership'],
   },
   'Can you actually build automations?': {
-    title: 'Yes — from event to decision to action.',
-    answer: 'I work across n8n, APIs, webhooks, CRM, WhatsApp, payments, Sheets and LLMs. I think in complete workflows: trigger, context, reasoning, action, human control and measurement.',
-    evidence: 'Examples above include lead intelligence, cross-tool orchestration, meeting-to-action systems and contextual follow-up.',
+    title: 'Yes — from trigger to decision to action.',
+    answer: 'I work across n8n, APIs, webhooks, CRM, WhatsApp, payments, Sheets and LLMs. I design complete workflows with context, reasoning, safeguards, human approval and measurement.',
+    evidence: 'The systems library shows practical patterns across lead intelligence, call coaching, payment workflows, reporting, knowledge assistants and cross-tool orchestration.',
+    proof: ['n8n + APIs + webhooks', 'CRM + WhatsApp + payments', 'Human-in-the-loop design'],
   },
   'Where is your strongest business depth?': {
-    title: 'Full-funnel growth and revenue operations.',
-    answer: 'I have worked across acquisition, content, CRM, sales systems, product, pricing, onboarding, retention and P&L — which helps me see automation opportunities across functions instead of inside one silo.',
-    evidence: 'Proof points include 27K→400K+ audience growth, +26% sales efficiency and high-volume revenue operations.',
+    title: 'Growth, GTM and revenue operations — end to end.',
+    answer: 'I have worked across acquisition, content, CRM, sales systems, product, pricing, onboarding, retention and P&L. That lets me spot automation opportunities across the customer journey, not inside one isolated task.',
+    evidence: 'My strongest work connects customer signals, team behaviour and operating data to a faster decision or a measurable commercial outcome.',
+    proof: ['27K → 400K+ audience', '+26% sales efficiency', '₹6 Cr/month operations'],
   },
   'What role are you best suited for?': {
-    title: 'AI automation / business transformation / growth systems leadership.',
-    answer: 'The best fit is a role where I can diagnose business processes, redesign workflows, prototype AI-enabled systems and drive adoption across teams — not simply manage a tool or write prompts.',
-    evidence: 'My advantage is connecting commercial judgment with hands-on automation and product thinking.',
+    title: 'AI Automation & Business Transformation Lead.',
+    answer: 'The strongest fit is a cross-functional role where I can diagnose processes, redesign workflows, prototype AI-enabled systems and drive adoption across growth, operations and customer-facing teams.',
+    evidence: 'I sit between strategy and implementation: commercially grounded enough to prioritise the right problem and technical enough to get a credible solution shipped.',
+    proof: ['AI Automation', 'Business Transformation', 'Growth / Revenue Operations'],
   },
 }
 
@@ -180,12 +229,18 @@ function App() {
         <div className="hero-glow hero-glow--one" />
         <div className="hero-glow hero-glow--two" />
         <motion.div className="hero-copy" initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
-          <div className="eyebrow"><span className="live-dot" /> BUSINESS SYSTEMS × AI × AUTOMATION</div>
-          <h1>I turn messy business systems into <em>intelligent operating systems.</em></h1>
-          <p className="hero-lede">I combine growth, revenue, operations, product thinking and hands-on AI automation to help teams decide faster, execute better and scale with less friction.</p>
+          <div className="eyebrow"><span className="live-dot" /> AI AUTOMATION × BUSINESS TRANSFORMATION</div>
+          <h1>I redesign how businesses <em>decide, execute and scale.</em></h1>
+          <p className="hero-lede">I bring 7+ years across growth, revenue, operations, product and P&L — then apply AI and automation to turn fragmented work into systems teams can actually use.</p>
           <div className="hero-actions">
             <a className="btn btn--primary" href="#systems">EXPLORE AI SYSTEMS <span>↓</span></a>
-            <a className="btn btn--secondary" href="#proof">SEE OPERATING PROOF <span>↗</span></a>
+            <a className="btn btn--secondary" href="#transformations">VIEW CASE STUDIES <span>↗</span></a>
+          </div>
+          <div className="hero-fit" aria-label="Best-fit roles">
+            <small>BEST FIT</small>
+            <span>AI Automation</span>
+            <span>Business Transformation</span>
+            <span>Growth & Revenue Operations</span>
           </div>
         </motion.div>
 
@@ -208,8 +263,8 @@ function App() {
       <section className="proof section" id="proof">
         <motion.div className="section-heading" {...fadeUp}>
           <p className="kicker">01 / OPERATING PROOF</p>
-          <h2>Before AI, there has to be <span>business depth.</span></h2>
-          <p>I have operated inside real funnels, targets, teams, customer problems and P&L constraints. That changes how I design automation.</p>
+          <h2>Business depth first. <span>AI leverage second.</span></h2>
+          <p>I have operated inside real funnels, targets, teams, customer problems and P&L constraints. That is the foundation behind every system shown here.</p>
         </motion.div>
         <div className="proof-grid">
           {proof.map((item, index) => (
@@ -226,10 +281,31 @@ function App() {
         </motion.div>
       </section>
 
+      <section className="transformations section" id="transformations">
+        <motion.div className="section-heading section-heading--wide" {...fadeUp}>
+          <p className="kicker">02 / SELECTED TRANSFORMATIONS</p>
+          <h2>Three problems. <span>Three operating systems rebuilt.</span></h2>
+          <p>Compact case studies showing the situation, the intervention and the measurable result.</p>
+        </motion.div>
+        <div className="transformation-grid">
+          {transformations.map((item, index) => (
+            <motion.article className="transformation-card" key={item.tag} {...fadeUp} transition={{ ...fadeUp.transition, delay: index * 0.07 }}>
+              <div className="transformation-top"><span>0{index + 1}</span><small>{item.tag}</small></div>
+              <h3>{item.title}</h3>
+              <dl>
+                <div><dt>CONTEXT</dt><dd>{item.context}</dd></div>
+                <div><dt>INTERVENTION</dt><dd>{item.action}</dd></div>
+              </dl>
+              <strong>{item.result}</strong>
+            </motion.article>
+          ))}
+        </div>
+      </section>
+
       <section className="systems section" id="systems">
         <motion.div className="section-heading section-heading--wide" {...fadeUp}>
-          <p className="kicker">02 / AI SYSTEMS LAB</p>
-          <h2>Not a list of tools. <span>A library of business use cases.</span></h2>
+          <p className="kicker">03 / AI SYSTEMS LAB</p>
+          <h2>A working library of <span>business use cases.</span></h2>
           <p>Selected systems I have built, applied or prototyped across revenue, operations, growth, rapid product development and multimodal creative workflows.</p>
         </motion.div>
 
@@ -264,7 +340,7 @@ function App() {
 
       <section className="method section" id="method">
         <motion.div className="section-heading" {...fadeUp}>
-          <p className="kicker">03 / HOW I WORK</p>
+          <p className="kicker">04 / HOW I WORK</p>
           <h2>System first. <span>Intelligence second.</span> Automation third.</h2>
           <p>The fastest automation is useless if it accelerates the wrong process. I use a business-first transformation loop.</p>
         </motion.div>
@@ -285,9 +361,9 @@ function App() {
 
       <section className="capabilities section">
         <motion.div className="capability-intro" {...fadeUp}>
-          <p className="kicker">04 / WHAT I BRING</p>
-          <h2>A business operator who can <span>get technical enough to ship.</span></h2>
-          <p>I am most useful between strategy and implementation — where a business problem needs to become a working system people actually adopt.</p>
+          <p className="kicker">05 / WHAT I BRING</p>
+          <h2>Strategy that reaches <span>implementation.</span></h2>
+          <p>I am most useful between the leadership conversation and the working system — where priorities, people, process, data and technology have to come together.</p>
         </motion.div>
         <div className="capability-list">
           {capabilities.map(([title, detail], index) => (
@@ -299,7 +375,7 @@ function App() {
       </section>
 
       <section className="toolbelt section">
-        <p className="kicker">05 / CURRENT TOOLBELT</p>
+        <p className="kicker">06 / CURRENT TOOLBELT</p>
         <div className="toolbelt-grid">
           <div><h2>Tools change.<br /><span>Operating logic shouldn't.</span></h2><p>I learn the stack fast, but I do not build my identity around a vendor.</p></div>
           <div className="tool-cloud">
@@ -310,26 +386,33 @@ function App() {
 
       <section className="ask section" id="ask">
         <motion.div className="ask-copy" {...fadeUp}>
-          <p className="kicker">06 / ASK PR</p>
-          <h2>Interrogate the profile.</h2>
-          <p>A useful portfolio should answer the questions a hiring leader is actually thinking — clearly and with evidence.</p>
-          <div className="ask-options">
-            {Object.keys(askAnswers).map((question) => <button key={question} onClick={() => setAsk(question)} className={ask === question ? 'active' : ''}>{question}<span>↗</span></button>)}
+          <p className="kicker">07 / HIRING QUESTIONS</p>
+          <h2>Ask what matters.</h2>
+          <p>Choose the question behind the interview. The answer includes the fit, the reasoning and the proof.</p>
+          <div className="ask-options" role="tablist" aria-label="Hiring questions">
+            {Object.keys(askAnswers).map((question) => <button key={question} role="tab" aria-selected={ask === question} onClick={() => setAsk(question)} className={ask === question ? 'active' : ''}>{question}<span>↗</span></button>)}
           </div>
         </motion.div>
-        <motion.div className="answer-panel" key={ask} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="answer-head"><span>PR / PORTFOLIO INTELLIGENCE</span><b>GROUNDED RESPONSE</b></div>
-          <small>QUESTION</small><p className="question">{ask}</p>
-          <small>ANSWER</small><h3>{answer.title}</h3><p>{answer.answer}</p>
-          <div className="evidence"><small>EVIDENCE</small><p>{answer.evidence}</p></div>
+        <motion.div className="answer-panel" key={ask} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} aria-live="polite">
+          <div className="answer-head"><span>PR / HIRING BRIEF</span><b>EVIDENCE-BASED</b></div>
+          <div className="answer-content">
+            <div className="answer-primary">
+              <small>QUESTION</small><p className="question">{ask}</p>
+              <small>ANSWER</small><h3>{answer.title}</h3><p>{answer.answer}</p>
+            </div>
+            <div className="answer-evidence">
+              <div className="proof-chips">{answer.proof.map((item) => <span key={item}>{item}</span>)}</div>
+              <div className="evidence"><small>WHY IT MATTERS</small><p>{answer.evidence}</p></div>
+            </div>
+          </div>
         </motion.div>
       </section>
 
       <section className="contact section" id="contact">
         <div className="contact-glow" />
-        <p className="kicker">07 / LET'S BUILD</p>
-        <h2>Bring me the process everyone has learned to tolerate.</h2>
-        <p>If a workflow is slow, fragmented, repetitive or impossible to see end-to-end, I want to understand it.</p>
+        <p className="kicker">08 / LET'S TALK</p>
+        <h2>If you are redesigning how a team works, let's talk.</h2>
+        <p>I am best suited to AI automation, business transformation and growth or revenue operations roles where strategy has to become a working system.</p>
         <div className="contact-actions">
           <a className="btn btn--primary" href="mailto:prashanthasai.rapelli@gmail.com">EMAIL ME <span>↗</span></a>
           <a className="btn btn--secondary" href="https://linkedin.com/in/prashanthrapelli" target="_blank" rel="noreferrer">LINKEDIN <span>↗</span></a>
