@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 type UseCase = {
   id: string
@@ -99,8 +99,10 @@ function RecruiterBrief({ open, onClose }: { open: boolean; onClose: () => void 
     return () => window.removeEventListener('keydown', close)
   }, [onClose])
 
-  return <AnimatePresence>{open && <motion.div className="brief-backdrop" role="presentation" onMouseDown={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-    <motion.section className="brief-modal" role="dialog" aria-modal="true" aria-labelledby="brief-title" onMouseDown={(event) => event.stopPropagation()} initial={{ opacity: 0, y: 28, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 18, scale: .98 }} transition={{ duration: .28, ease: [0.16, 1, 0.3, 1] }}>
+  if (!open) return null
+
+  return <div className="brief-backdrop" role="presentation" onMouseDown={onClose}>
+    <section className="brief-modal" role="dialog" aria-modal="true" aria-labelledby="brief-title" onMouseDown={(event) => event.stopPropagation()}>
       <div className="brief-head"><span>RECRUITER BRIEF / 90 SECONDS</span><button onClick={onClose} aria-label="Close recruiter brief">×</button></div>
       <div className="brief-body">
         <p className="kicker">THE SHORT VERSION</p><h2 id="brief-title">A business operator who can build the system.</h2>
@@ -113,8 +115,8 @@ function RecruiterBrief({ open, onClose }: { open: boolean; onClose: () => void 
         </div>
         <div className="brief-actions"><a className="btn btn--primary" href={RESUME} download>DOWNLOAD RÉSUMÉ <span>↓</span></a><a className="btn btn--secondary" href="mailto:prashanthasai.rapelli@gmail.com">EMAIL PRASHANTH <Arrow /></a></div>
       </div>
-    </motion.section>
-  </motion.div>}</AnimatePresence>
+    </section>
+  </div>
 }
 
 function Home({ openBrief }: { openBrief: () => void }) {
