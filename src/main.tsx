@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App'
 import './styles.css'
 import './ask-upgrade.css'
+import './portfolio-v2.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
