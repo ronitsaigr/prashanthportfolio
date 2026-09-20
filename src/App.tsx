@@ -43,6 +43,23 @@ const transformations = [
   },
 ]
 
+const orgManagerModules = [
+  ['CRM', 'Leads, pipeline, scoring and conversion context'],
+  ['PROJECTS', 'CRM-linked delivery, owners, tasks and due dates'],
+  ['HRMS', 'People, leave, attendance, payroll and recruitment'],
+  ['AUTOMATION', 'Triggers, field changes, hand-offs and workflows'],
+  ['COMMUNICATIONS', 'Email, SMS, WhatsApp and calling integrations'],
+  ['INTELLIGENCE', 'Dashboards, unified insights and ask-your-data'],
+]
+
+const orgManagerFlow = [
+  ['01', 'CAPTURE', 'Source + intent'],
+  ['02', 'QUALIFY', 'Score + stage'],
+  ['03', 'CONVERT', 'Calls + messages'],
+  ['04', 'DELIVER', 'Task + owner'],
+  ['05', 'LEARN', 'Views + analytics'],
+]
+
 const useCases: UseCase[] = [
   {
     id: 'lead-intelligence', category: 'Revenue', title: 'AI Lead Intelligence + Next Best Action', status: 'BUILT',
@@ -170,8 +187,8 @@ const askAnswers: Record<string, { title: string; answer: string; evidence: stri
   'Can you actually build automations?': {
     title: 'Yes — from trigger to decision to action.',
     answer: 'I work across n8n, APIs, webhooks, CRM, WhatsApp, payments, Sheets and LLMs. I design complete workflows with context, reasoning, safeguards, human approval and measurement.',
-    evidence: 'The systems library shows practical patterns across lead intelligence, call coaching, payment workflows, reporting, knowledge assistants and cross-tool orchestration.',
-    proof: ['n8n + APIs + webhooks', 'CRM + WhatsApp + payments', 'Human-in-the-loop design'],
+    evidence: 'The systems library shows practical automation patterns, while OrgManager proves I can carry a business problem through product modelling, workflow design and a public multi-tenant MVP.',
+    proof: ['Live SaaS MVP', 'n8n + APIs + webhooks', 'Human-in-the-loop design'],
   },
   'Where is your strongest business depth?': {
     title: 'Growth, GTM and revenue operations — end to end.',
@@ -217,8 +234,8 @@ function App() {
         <a className="brand" href="#top" aria-label="Prashanth Rapelli home"><span>PR</span><b>PRASHANTH RAPELLI</b></a>
         <div className="nav-links">
           <a href="#proof">Proof</a>
+          <a href="#orgmanager">OrgManager</a>
           <a href="#systems">AI Systems</a>
-          <a href="#method">Method</a>
           <a href="#ask">Ask PR</a>
         </div>
         <a className="nav-cta" href="mailto:prashanthasai.rapelli@gmail.com">LET'S TALK ↗</a>
@@ -234,7 +251,7 @@ function App() {
           <p className="hero-lede">I bring 7+ years across growth, revenue, operations, product and P&L — then apply AI and automation to turn fragmented work into systems teams can actually use.</p>
           <div className="hero-actions">
             <a className="btn btn--primary" href="#systems">EXPLORE AI SYSTEMS <span>↓</span></a>
-            <a className="btn btn--secondary" href="#transformations">VIEW CASE STUDIES <span>↗</span></a>
+            <a className="btn btn--secondary" href="#orgmanager">VIEW SHIPPED PRODUCT <span>↗</span></a>
           </div>
           <div className="hero-fit" aria-label="Best-fit roles">
             <small>BEST FIT</small>
@@ -302,9 +319,104 @@ function App() {
         </div>
       </section>
 
+      <section className="orgmanager section" id="orgmanager">
+        <motion.div className="orgmanager-hero" {...fadeUp}>
+          <div className="orgmanager-brandline">
+            <div className="om-mark" aria-hidden="true">OM</div>
+            <div>
+              <small>SHIPPED PRODUCT / LIVE MVP</small>
+              <strong>OrgManager</strong>
+            </div>
+            <span className="product-live"><i /> LIVE AT ORGMANAGER.IN</span>
+          </div>
+
+          <div className="orgmanager-title">
+            <div>
+              <p className="kicker">03 / PRODUCT OWNERSHIP</p>
+              <h2>One operating record from <span>lead to delivery.</span></h2>
+            </div>
+            <div className="orgmanager-intro">
+              <p>OrgManager is an India-first Business OS built to stop customer context, ownership and next actions from disappearing between CRM, delivery, people and communication tools.</p>
+              <div className="orgmanager-actions">
+                <a className="btn btn--primary" href="https://www.orgmanager.in/" target="_blank" rel="noreferrer">OPEN LIVE PRODUCT <span>↗</span></a>
+                <a className="product-text-link" href="https://www.orgmanager.in/signup" target="_blank" rel="noreferrer">Create an organisation <span>↗</span></a>
+              </div>
+            </div>
+          </div>
+
+          <div className="product-canvas" aria-label="OrgManager product model">
+            <div className="product-sidebar">
+              <div className="product-sidebar-brand"><span>OM</span><b>OrgManager</b></div>
+              {['Overview', 'CRM', 'Projects', 'People', 'Automations', 'Insights'].map((item, index) => (
+                <div className={index === 1 ? 'active' : ''} key={item}><i />{item}</div>
+              ))}
+              <small>ONE ORG · ONE CONTEXT</small>
+            </div>
+            <div className="product-workspace">
+              <div className="product-window-top">
+                <div><small>ORGANISATION</small><strong>Operating workspace</strong></div>
+                <div className="window-actions"><span /><span /><b>PR</b></div>
+              </div>
+              <div className="product-workspace-title">
+                <div><small>CONNECTED WORKFLOW</small><h3>Customer context moves with the work.</h3></div>
+                <span className="workspace-state">ROLE-AWARE</span>
+              </div>
+              <div className="product-flow-preview">
+                {orgManagerFlow.slice(0, 4).map(([num, title, detail], index) => (
+                  <div className="product-stage" key={title}>
+                    <span>{num}</span><small>{title}</small><strong>{detail}</strong>
+                    {index < 3 && <i>→</i>}
+                  </div>
+                ))}
+              </div>
+              <div className="product-context-row">
+                <div><small>SHARED CONTEXT</small><strong>Lead history · owner · status · next action</strong></div>
+                <div><small>CONTROL</small><strong>Organisation boundaries · roles · permissions</strong></div>
+                <div><small>INTELLIGENCE</small><strong>Dashboards · scoring · ask-your-data</strong></div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="orgmanager-story">
+          <motion.article className="product-thesis" {...fadeUp}>
+            <p className="kicker">WHY I BUILT IT</p>
+            <h3>The problem was never another missing tool. It was the missing hand-off between them.</h3>
+            <p>At Parikshe, source, conversations, payment status and delivery work lived across tools and people. Managers had to reconstruct who owned the customer, what had happened and what should happen next.</p>
+            <div className="product-role">
+              <small>MY OWNERSHIP</small>
+              <p>Mapped the hand-offs, defined the product model and business rules, designed the workflows, built the web experience and released the public MVP.</p>
+            </div>
+          </motion.article>
+
+          <motion.div className="product-modules" {...fadeUp}>
+            {orgManagerModules.map(([title, detail], index) => (
+              <div className="product-module" key={title}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <strong>{title}</strong>
+                <p>{detail}</p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        <motion.div className="product-architecture" {...fadeUp}>
+          <div className="architecture-label"><small>CORE OPERATING LOOP</small><strong>Context stays connected.</strong></div>
+          <div className="architecture-flow">
+            {orgManagerFlow.map(([num, title, detail], index) => (
+              <div key={title}>
+                <span>{num}</span><strong>{title}</strong><small>{detail}</small>
+                {index < orgManagerFlow.length - 1 && <i>→</i>}
+              </div>
+            ))}
+          </div>
+          <p><b>Current proof:</b> public product, organisation sign-up, multi-tenant structure, role-based access and connected CRM-to-delivery workflow. Quantified customer impact is not claimed yet.</p>
+        </motion.div>
+      </section>
+
       <section className="systems section" id="systems">
         <motion.div className="section-heading section-heading--wide" {...fadeUp}>
-          <p className="kicker">03 / AI SYSTEMS LAB</p>
+          <p className="kicker">04 / AI SYSTEMS LAB</p>
           <h2>A working library of <span>business use cases.</span></h2>
           <p>Selected systems I have built, applied or prototyped across revenue, operations, growth, rapid product development and multimodal creative workflows.</p>
         </motion.div>
@@ -340,7 +452,7 @@ function App() {
 
       <section className="method section" id="method">
         <motion.div className="section-heading" {...fadeUp}>
-          <p className="kicker">04 / HOW I WORK</p>
+          <p className="kicker">05 / HOW I WORK</p>
           <h2>System first. <span>Intelligence second.</span> Automation third.</h2>
           <p>The fastest automation is useless if it accelerates the wrong process. I use a business-first transformation loop.</p>
         </motion.div>
@@ -361,7 +473,7 @@ function App() {
 
       <section className="capabilities section">
         <motion.div className="capability-intro" {...fadeUp}>
-          <p className="kicker">05 / WHAT I BRING</p>
+          <p className="kicker">06 / WHAT I BRING</p>
           <h2>Strategy that reaches <span>implementation.</span></h2>
           <p>I am most useful between the leadership conversation and the working system — where priorities, people, process, data and technology have to come together.</p>
         </motion.div>
@@ -375,7 +487,7 @@ function App() {
       </section>
 
       <section className="toolbelt section">
-        <p className="kicker">06 / CURRENT TOOLBELT</p>
+        <p className="kicker">07 / CURRENT TOOLBELT</p>
         <div className="toolbelt-grid">
           <div><h2>Tools change.<br /><span>Operating logic shouldn't.</span></h2><p>I learn the stack fast, but I do not build my identity around a vendor.</p></div>
           <div className="tool-cloud">
@@ -386,7 +498,7 @@ function App() {
 
       <section className="ask section" id="ask">
         <motion.div className="ask-copy" {...fadeUp}>
-          <p className="kicker">07 / HIRING QUESTIONS</p>
+          <p className="kicker">08 / HIRING QUESTIONS</p>
           <h2>Ask what matters.</h2>
           <p>Choose the question behind the interview. The answer includes the fit, the reasoning and the proof.</p>
           <div className="ask-options" role="tablist" aria-label="Hiring questions">
@@ -410,7 +522,7 @@ function App() {
 
       <section className="contact section" id="contact">
         <div className="contact-glow" />
-        <p className="kicker">08 / LET'S TALK</p>
+        <p className="kicker">09 / LET'S TALK</p>
         <h2>If you are redesigning how a team works, let's talk.</h2>
         <p>I am best suited to AI automation, business transformation and growth or revenue operations roles where strategy has to become a working system.</p>
         <div className="contact-actions">
