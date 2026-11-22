@@ -1,0 +1,6 @@
+---
+import Layout from '../components/Layout.astro';import {envOf} from '../lib/runtime';
+export const prerender=false;Astro.response.headers.set('cache-control','no-store');
+const code=Astro.url.searchParams.get('code')||'';const cert=/^[a-zA-Z0-9_-]{24,100}$/.test(code)?await envOf(Astro.locals).DB.prepare('SELECT holder_name,programme,issued_at,revoked_at FROM certificates WHERE code=?').bind(code).first<{holder_name:string;programme:string;issued_at:string;revoked_at:string|null}>():null;
+---
+<Layout title="Certificate verification"><h1>Verify a certificate</h1><form method="get"><label>Certificate code<input name="code" value={code} required maxlength="100"/></label><button>Verify</button></form>{code&&<div class="panel">{cert?<><h2>{cert.revoked_at?'Revoked':'Valid'}</h2><p>{cert.holder_name} · {cert.programme}</p><p>Issued: {new Date(cert.issued_at).toLocaleDateString('en-IN',{timeZone:'Asia/Kolkata'})}</p></>:<p>No matching certificate found.</p>}</div>}</Layout>

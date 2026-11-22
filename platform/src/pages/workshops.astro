@@ -1,0 +1,6 @@
+---
+import Layout from '../components/Layout.astro';import {envOf} from '../lib/runtime';import {formatINR} from '../lib/money';
+export const prerender=false;const env=envOf(Astro.locals);
+const events=(await env.DB.prepare("SELECT slug,title,description,starts_at,mode,venue,price_paise FROM events WHERE status='published' AND starts_at>? ORDER BY starts_at").bind(new Date().toISOString()).all<{slug:string;title:string;description:string;starts_at:string;mode:string;venue:string;price_paise:number}>()).results;
+---
+<Layout title="Workshops"><h1>Practical AI workshops</h1><p class="lead">Learn through hands-on projects and real business workflows.</p>{events.length===0?<p>No public workshops are scheduled yet. <a href="/contact">Enquire about group training.</a></p>:<div class="tiles">{events.map(e=><article><h3>{e.title}</h3><p>{e.description}</p><p>{new Date(e.starts_at).toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})} IST · {e.mode}</p><p>{formatINR(e.price_paise)}</p><a href="/contact">Enquire about this workshop</a></article>)}</div>}</Layout>

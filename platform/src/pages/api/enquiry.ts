@@ -2,7 +2,7 @@ import type {APIRoute} from 'astro';import {envOf} from '../../lib/runtime';impo
 export const prerender=false;
 const reply=(data:unknown,status=200)=>new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json','cache-control':'no-store'}});
 export const POST:APIRoute=async({request,locals})=>{
- const env=envOf(locals);if(!env.DB||!env.TURNSTILE_SECRET_KEY)return reply({error:'Enquiries are not configured yet.'},503);
+ const env=envOf(locals);if(!env.DB||!env.TURNSTILE_SECRET_KEY||env.ENABLE_PUBLIC_FORMS!=='true')return reply({error:'Enquiries are not configured yet.'},503);
  if(request.headers.get('origin')!==new URL(request.url).origin)return reply({error:'Invalid origin'},403);
  if(Number(request.headers.get('content-length')||0)>20000)return reply({error:'Too large'},413);
  try{const form=await request.formData();const val=(k:string)=>String(form.get(k)||'').trim().slice(0,1000);
@@ -21,6 +21,9 @@ export const POST:APIRoute=async({request,locals})=>{
  env.DB.prepare('INSERT INTO enquiries(id,contact_id,kind,payload,created_at) VALUES(?,(SELECT id FROM contacts WHERE email=?),?,?,?)').bind(eid,email,kind,JSON.stringify(payload),now),
  env.DB.prepare('INSERT INTO webhook_outbox(id,event,payload,next_attempt_at) VALUES(?,?,?,?)').bind(eid,event,JSON.stringify({event,id:eid,occurred_at:now,payload}),now)];
  if(scored)stmts.push(env.DB.prepare('INSERT INTO leak_checks(id,contact_id,answers,score,band,leads_at_risk,created_at) VALUES(?,(SELECT id FROM contacts WHERE email=?),?,?,?,?,?)').bind(eid,email,JSON.stringify(answers),scored.score,scored.band,scored.risk,now));
+ const emails=[{id:eid+'-ack',to:email,subject:'Your enquiry has been received',text:scored?'Your assessment: '+scored.score+'/100 ('+scored.band+'). Illustrative leads at risk: '+scored.risk+'. Recommendations: '+scored.recommendations.map(x=>x.target).join('; '):'Thank you for your enquiry. We will respond to discuss your requirements.'}];
+ if(env.NOTIFY_EMAIL)emails.push({id:eid+'-owner',to:env.NOTIFY_EMAIL,subject:'New business enquiry',text:name+' | '+company+' | '+kind+' | '+email});
+ for(const mail of emails)stmts.push(env.DB.prepare('INSERT INTO webhook_outbox(id,event,payload,next_attempt_at) VALUES(?,?,?,?)').bind(mail.id,'email.send',JSON.stringify(mail),now));
  await env.DB.batch(stmts);await deliver(env,eid).catch(()=>false);
  return reply({ok:true,result:scored});
  }catch{return reply({error:'Unable to process submission. Check answers or try again.'},400);}

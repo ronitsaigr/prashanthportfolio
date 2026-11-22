@@ -3,7 +3,7 @@ import {envOf} from '../lib/runtime';
 import {questions} from '../lib/score';
 const {kind='contact'}=Astro.props;
 const env=envOf(Astro.locals);
-const siteKey=env.TURNSTILE_SITE_KEY;
+const siteKey=env.ENABLE_PUBLIC_FORMS==='true'?env.TURNSTILE_SITE_KEY:undefined;
 ---
 {!siteKey?<p class="panel">Online submissions are not available on this preview until verification is configured.</p>:null}
 <form class="enquiry" method="post" action="/api/enquiry">

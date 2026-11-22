@@ -20,5 +20,15 @@
       "database_id": "1fc00207-9a8f-46d3-9feb-c1d7b3bfd921",
       "migrations_dir": "migrations"
     }
-  ]
+  ],
+  "vars": {
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAGNAD7StUyi6KUw-",
+    "ENABLE_PUBLIC_FORMS": "false"
+  },
+  "triggers": {
+    "crons": [
+      "* * * * *",
+      "30 2 * * MON"
+    ]
+  }
 }

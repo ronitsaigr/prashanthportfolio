@@ -1,0 +1,2 @@
+import {describe,it,expect} from 'vitest';import {commissionPaise,discountPaise,verifyCashfree} from '../src/lib/cashfree';
+describe('payment business rules',()=>{it('caps discount at price',()=>expect(discountPaise(10000,'flat',15000)).toBe(10000));it('calculates net refund commission',()=>expect(commissionPaise(10000,2000,1500)).toBe(1200));it('rejects invalid refunds',()=>expect(()=>commissionPaise(100,200,1000)).toThrow());it('rejects invalid signatures',async()=>expect(await verifyCashfree('secret','123','{}','invalid')).toBe(false));});
