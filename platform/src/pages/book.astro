@@ -1,0 +1,4 @@
+---
+import Layout from '../components/Layout.astro';import {envOf} from '../lib/runtime';export const prerender=false;const url=envOf(Astro.locals).BOOKING_URL;const valid=url&&/^https:\/\/(cal\.com|calendly\.com)\//.test(url);
+---
+<Layout title="Book a call"><h1>Book a conversation</h1><p class="lead">A short discussion to understand your business, priorities and possible next steps.</p>{valid?<a class="button" href={url}>Choose a time</a>:<a class="button" href="/contact">Request a consultation</a>}</Layout>

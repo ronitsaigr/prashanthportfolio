@@ -1,0 +1,6 @@
+---
+import Layout from '../../components/Layout.astro';import {cases} from '../../lib/content';export const prerender=true;
+export function getStaticPaths(){return cases.map(study=>({params:{slug:study.slug},props:{study}}));}
+const {study}=Astro.props;
+---
+<Layout title={study.title}><p class="eyebrow">From previous roles</p><h1>{study.title}</h1><h2>Problem</h2><p>{study.problem}</p><h2>Approach</h2><p>{study.change}</p><h2>Result</h2><p>{study.result}</p><a class="button" href="/contact">Discuss a similar problem</a></Layout>

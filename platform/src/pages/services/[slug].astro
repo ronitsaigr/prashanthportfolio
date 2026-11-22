@@ -1,0 +1,6 @@
+---
+import Layout from '../../components/Layout.astro';import {offers} from '../../lib/content';export const prerender=true;
+export function getStaticPaths(){return offers.map(offer=>({params:{slug:offer.slug},props:{offer}}));}
+const {offer}=Astro.props;
+---
+<Layout title={offer.name}><h1>{offer.name}</h1><p class="lead">{offer.desc}</p><h2>What's included</h2><p>{offer.deliverables}</p><h2>Timeline</h2><p>{offer.time}. Final scope is agreed before implementation.</p><h2>How we start</h2><p>We discuss your current process, goals and existing systems before proposing a solution.</p><a class="button" href="/contact">Discuss this service</a></Layout>

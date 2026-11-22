@@ -1,21 +1,6 @@
 ---
-import '../styles/global.css';
-export const prerender = true;
+import Layout from '../components/Layout.astro';
+import {offers,cases,modules} from '../lib/content';
+export const prerender=true;
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex,nofollow" />
-    <title>Prashanth Rapelli | Business systems</title>
-  </head>
-  <body class="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-    <main class="mx-auto flex min-h-screen max-w-4xl flex-col justify-center px-6 py-20">
-      <p class="mb-5 text-sm font-semibold uppercase tracking-widest text-teal-700 dark:text-teal-400">Prashanth Rapelli · Platform preview</p>
-      <h1 class="max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-6xl">Business problems. Systems that actually get used.</h1>
-      <p class="mt-6 max-w-xl text-lg leading-relaxed text-slate-600 dark:text-slate-300">AI and automation, revenue operations, and practical training for businesses and institutions.</p>
-      <div class="mt-10 border-t border-slate-200 pt-5 text-sm text-slate-600 dark:border-slate-800 dark:text-slate-300">Development preview — no enquiries or payments are collected here yet.</div>
-    </main>
-  </body>
-</html>
+<Layout title="AI, automation and revenue operations"><p class="eyebrow">Business consulting · AI · Automation</p><h1>I help education businesses stop losing leads and revenue.</h1><p class="lead">Practical AI and automation their teams actually use. I connect business problems with systems that actually get used.</p><div class="actions"><a class="button" href="/leak-check">Free Revenue Leak Check</a><a class="button secondary" href="/book">Book a call</a></div><section class="section"><p class="eyebrow">Results from previous roles</p><div class="tiles">{[['₹6 crore','Monthly revenue linked to growth and operations work'],['26%','Improvement in sales efficiency'],['6,000–7,000','Monthly leads supported by integrated workflows'],['46%','Production output improvement']].map(([n,d])=><article><h2>{n}</h2><p>{d}</p></article>)}</div></section><section class="section"><h2>Where I can help</h2><div class="tiles">{offers.map(o=><article><h3>{o.name}</h3><p>{o.desc}</p><a href={'/services/'+o.slug}>Explore service</a></article>)}</div></section><section class="section"><h2>Train, build, improve.</h2><p>Understand the problem → train the team → build workflows → measure and improve.</p><p>For education businesses, colleges, coaching institutes, study-abroad consultancies and other lead-heavy businesses.</p></section><section class="section"><h2>Practical AI training</h2><div class="tiles">{modules.map(m=><article><h3>{m}</h3><p>Hands-on training adapted to your audience.</p></article>)}</div><a href="/training">Explore training formats</a></section><section class="section"><h2>Experience in action</h2><div class="tiles">{cases.map(c=><article><h3>{c.title}</h3><p>{c.result}</p><a href={'/case-studies/'+c.slug}>Read case study</a></article>)}</div><a href="/demos">Explore workflow demos</a></section><section class="section"><h2>Let's find the right starting point.</h2><a class="button" href="/contact">Discuss your business</a></section></Layout>
