@@ -1,0 +1,5 @@
+# Names only; never commit real values.
+N8N_WEBHOOK_URL=
+N8N_SIGNING_SECRET=
+TURNSTILE_SECRET_KEY=
+EMAIL_API_KEY=
