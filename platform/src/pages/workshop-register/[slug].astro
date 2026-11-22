@@ -1,0 +1,13 @@
+---
+import Layout from '../../components/Layout.astro';
+import {envOf} from '../../lib/runtime';
+import {formatINR} from '../../lib/money';
+export const prerender=false; Astro.response.headers.set('cache-control','no-store');
+const env=envOf(Astro.locals);
+if(env.ENABLE_SANDBOX_CHECKOUT!=='true'||!env.TURNSTILE_SITE_KEY||!env.CASHFREE_CLIENT_ID||!env.CASHFREE_CLIENT_SECRET)return Astro.redirect('/workshops');
+const event=await env.DB.prepare("SELECT slug,title,description,price_paise FROM events WHERE slug=? AND status='published' AND starts_at>?").bind(Astro.params.slug||'',new Date().toISOString()).first<{slug:string;title:string;description:string;price_paise:number}>();
+if(!event)return new Response('Not found',{status:404});
+---
+<Layout title="Sandbox workshop registration"><p class="panel">Test checkout only. Use synthetic customer information and Cashfree test payment details. No real payment is accepted.</p><h1>{event.title}</h1><p>{event.description}</p><p>Workshop price: {formatINR(event.price_paise)}</p><form id="register"><input type="hidden" name="slug" value={event.slug}/><label>Name<input name="name" required maxlength="100"/></label><label>Test email<input name="email" type="email" required maxlength="180"/></label><label>Test Indian mobile number<input name="phone" type="tel" required pattern="[6-9][0-9]{9}"/></label><label>Company<input name="company" required maxlength="150"/></label><label>Creator code (optional)<input name="ref" maxlength="32" value={Astro.url.searchParams.get('ref')||''}/></label><label><input type="checkbox" name="consent" required value="yes"/>I am using synthetic data for sandbox testing.</label><div class="cf-turnstile" data-sitekey={env.TURNSTILE_SITE_KEY}></div><button>Continue to Cashfree sandbox</button><p role="status" id="status"></p></form><script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script><script is:inline src="https://sdk.cashfree.com/js/v3/cashfree.js"></script><script is:inline>
+const form=document.getElementById('register');form.addEventListener('submit',async function(e){e.preventDefault();const status=document.getElementById('status'),button=form.querySelector('button');button.disabled=true;try{const r=await fetch('/api/workshops/order',{method:'POST',body:new FormData(form)});const data=await r.json();if(!r.ok)throw Error(data.error||'Could not create order');const cf=Cashfree({mode:'sandbox'});await cf.checkout({paymentSessionId:data.payment_session_id,redirectTarget:'_self'});}catch(e){status.textContent=e.message||'Checkout failed';button.disabled=false;window.turnstile?.reset();}});
+</script></Layout>

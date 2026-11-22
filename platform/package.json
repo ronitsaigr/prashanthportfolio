@@ -12,7 +12,8 @@
     "test": "vitest run",
     "lint": "eslint src tests",
     "format": "prettier --check .",
-    "deploy": "astro build && wrangler deploy"
+    "deploy": "astro build && wrangler deploy",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "astro": "^5.16.0",
@@ -28,6 +29,7 @@
     "eslint": "^9.39.0",
     "typescript-eslint": "^8.46.0",
     "prettier": "^3.6.0",
-    "prettier-plugin-astro": "^0.14.1"
+    "prettier-plugin-astro": "^0.14.1",
+    "@playwright/test": "^1.52.0"
   }
 }

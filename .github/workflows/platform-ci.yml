@@ -20,3 +20,6 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npx wrangler d1 migrations apply DB --local
+      - run: npm run test:e2e
