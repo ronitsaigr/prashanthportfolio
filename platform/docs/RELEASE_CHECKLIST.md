@@ -1,5 +1,5 @@
 # Release gates (preview first)
-- Cloudflare GitHub installation must explicitly authorize ronitsaigr/prashanthportfolio; build branch platform-phase-0, root platform, Worker prashanth-platform-preview.
+- Cloudflare GitHub installation must explicitly authorize ronitsaigr/prashanthportfolio; build branch platform-phase-0, root platform, Worker prashanthportfolio.
 - Keep public forms disabled until legal review and Turnstile secret configured securely; verify sandbox with synthetic data. Never commit secrets.
 - Enable Cloudflare Zero Trust; protect /admin and /api/admin and configure ACCESS_TEAM_DOMAIN, ACCESS_AUD, ADMIN_EMAIL. App already fails closed.
 - Configure N8N_WEBHOOK_URL, N8N_SIGNING_SECRET, EMAIL_API_KEY, EMAIL_FROM, NOTIFY_EMAIL and BOOKING_URL in Worker runtime. Resend sender must be verified. Cron retries every minute and digest Monday 08:00 IST.
