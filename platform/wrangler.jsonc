@@ -1,12 +1,24 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "prashanth-platform-preview",
   "main": "./dist/_worker.js/index.js",
   "compatibility_date": "2026-11-22",
-  "compatibility_flags": ["nodejs_compat"],
-  "assets": { "binding": "ASSETS", "directory": "./dist" },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist"
+  },
   "workers_dev": true,
-  "observability": { "enabled": true }
-  // Add DB binding after creating the preview D1 database.
-  // Production uses a distinct Worker and D1 database; never reuse preview IDs.
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "prashanth-platform-preview",
+      "database_id": "1fc00207-9a8f-46d3-9feb-c1d7b3bfd921",
+      "migrations_dir": "migrations"
+    }
+  ]
 }
