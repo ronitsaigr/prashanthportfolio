@@ -1,0 +1,7 @@
+---
+import Layout from '../components/Layout.astro';import {envOf} from '../lib/runtime';
+export const prerender=false;Astro.response.headers.set('cache-control','no-store');
+const env=envOf(Astro.locals);const orderId=Astro.url.searchParams.get('order_id')||'';
+const status=env.ENABLE_SANDBOX_CHECKOUT==='true'&&/^workshop_[a-f0-9-]{36}$/.test(orderId)?(await env.DB.prepare('SELECT status FROM registrations WHERE cashfree_order_id=?').bind(orderId).first<{status:string}>())?.status:'unknown';
+---
+<Layout title="Workshop payment status"><h1>{status==='paid'?'Sandbox payment confirmed':'Payment status'}</h1><p>{status==='paid'?'Your test payment was verified by the server.':'If payment was attempted, confirmation may still be pending. Refresh after the verified webhook arrives.'}</p><p>No real tickets or join links are issued by the sandbox.</p><a href="/workshops">Back to workshops</a></Layout>

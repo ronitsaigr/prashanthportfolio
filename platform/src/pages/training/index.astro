@@ -1,0 +1,4 @@
+---
+import Layout from '../../components/Layout.astro';import {modules} from '../../lib/content';export const prerender=true;
+---
+<Layout title="Training"><h1>Learn AI by using it.</h1><p class="lead">Practical programmes for students, faculty, and business teams.</p><div class="tiles">{modules.map(m=><article><h3>{m}</h3><p>2-hour talk · 1-day workshop · 3–5 day bootcamp · 30-hour course</p></article>)}</div><div class="actions"><a class="button" href="/training/colleges">For colleges</a><a class="button secondary" href="/training/companies">For companies</a></div></Layout>

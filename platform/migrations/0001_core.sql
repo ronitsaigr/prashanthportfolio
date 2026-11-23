@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS contacts(id TEXT PRIMARY KEY,email TEXT NOT NULL UNIQUE,name TEXT NOT NULL,phone TEXT,company TEXT,segment TEXT,source TEXT,utm TEXT,ref_code TEXT,landing_page TEXT,referrer TEXT,consent_at TEXT NOT NULL,policy_version TEXT NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS deals(id TEXT PRIMARY KEY,contact_id TEXT NOT NULL REFERENCES contacts(id),type TEXT NOT NULL,stage TEXT NOT NULL DEFAULT 'new',value_paise INTEGER NOT NULL DEFAULT 0 CHECK(value_paise>=0),next_step TEXT,next_step_date TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS enquiries(id TEXT PRIMARY KEY,contact_id TEXT NOT NULL REFERENCES contacts(id),kind TEXT NOT NULL,payload TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS leak_checks(id TEXT PRIMARY KEY,contact_id TEXT NOT NULL REFERENCES contacts(id),answers TEXT NOT NULL,score INTEGER NOT NULL,band TEXT NOT NULL,leads_at_risk INTEGER NOT NULL,created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS activities(id TEXT PRIMARY KEY,deal_id TEXT NOT NULL REFERENCES deals(id),kind TEXT NOT NULL,body TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS webhook_outbox(id TEXT PRIMARY KEY,event TEXT NOT NULL,payload TEXT NOT NULL,attempts INTEGER NOT NULL DEFAULT 0,next_attempt_at TEXT NOT NULL,delivered_at TEXT,last_error TEXT);
+CREATE TABLE IF NOT EXISTS audit_log(id TEXT PRIMARY KEY,actor TEXT NOT NULL,action TEXT NOT NULL,entity_id TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS rate_limits(key TEXT NOT NULL,window INTEGER NOT NULL,count INTEGER NOT NULL,PRIMARY KEY(key,window));
+CREATE INDEX IF NOT EXISTS deals_stage ON deals(stage);
+CREATE INDEX IF NOT EXISTS outbox_due ON webhook_outbox(delivered_at,next_attempt_at);

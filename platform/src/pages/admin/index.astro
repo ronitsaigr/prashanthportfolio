@@ -1,0 +1,16 @@
+---
+import Layout from '../../components/Layout.astro';
+import {envOf,stages} from '../../lib/runtime';
+import {adminIdentity} from '../../lib/security';
+import {formatINR} from '../../lib/money';
+export const prerender=false;
+const env=envOf(Astro.locals);
+const identity=await adminIdentity(Astro.request,env);
+if(!identity)return new Response('Forbidden',{status:403,headers:{'cache-control':'no-store'}});
+Astro.response.headers.set('cache-control','no-store');
+const deals=(await env.DB.prepare('SELECT d.*,c.name,c.email,c.company FROM deals d JOIN contacts c ON c.id=d.contact_id ORDER BY d.updated_at DESC LIMIT 300').all<{id:string;name:string;email:string;company:string;stage:string;type:string;value_paise:number;next_step:string;next_step_date:string}>()).results;
+const totals=(await env.DB.prepare('SELECT stage,COUNT(*) AS count,SUM(value_paise) AS total FROM deals GROUP BY stage').all<{stage:string;count:number;total:number}>()).results;
+const pending=await env.DB.prepare('SELECT COUNT(*) AS n FROM webhook_outbox WHERE delivered_at IS NULL').first<{n:number}>();
+const notes=(await env.DB.prepare('SELECT a.body,a.created_at,c.name FROM activities a JOIN deals d ON d.id=a.deal_id JOIN contacts c ON c.id=d.contact_id ORDER BY a.created_at DESC LIMIT 30').all<{body:string;created_at:string;name:string}>()).results;
+---
+<Layout title="Business CRM"><h1>Business CRM</h1><p>Signed in as {identity}. Pipeline values are deal estimates, not collected cash.</p><div class="tiles">{totals.map(t=><article><small>{t.stage}</small><h2>{formatINR(t.total)}</h2><p>{t.count} deals</p></article>)}</div><p><a class="button" href="/api/admin/deals">Export deals CSV</a> Outbox pending: {pending?.n??0}</p><form method="post" action="/api/admin/retry"><button>Retry due notifications</button></form><h2>Pipeline</h2><div class="board">{stages.map(stage=><section><h3>{stage.replaceAll('_',' ')}</h3>{deals.filter(d=>d.stage===stage).map(d=><article><strong>{d.name}</strong><p>{d.company} · {d.email}</p><form action="/api/admin/deals" method="post"><input type="hidden" name="id" value={d.id}/><label>Stage<select name="stage">{stages.map(s=><option selected={s===d.stage} value={s}>{s}</option>)}</select></label><label>Deal value (₹)<input name="value" type="number" min="0" step=".01" value={d.value_paise/100}/></label><label>Next action<input name="next" value={d.next_step||''}/></label><label>Due date<input name="due" type="date" value={d.next_step_date||''}/></label><label>Note<textarea name="note"></textarea></label><button>Save deal</button></form></article>)}</section>)}</div><h2>Recent activity</h2>{notes.map(n=><p>{n.name}: {n.body} · {new Date(n.created_at).toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})}</p>)}</Layout>

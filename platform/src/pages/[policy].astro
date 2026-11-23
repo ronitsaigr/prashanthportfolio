@@ -1,0 +1,7 @@
+---
+import Layout from '../components/Layout.astro';export const prerender=true;
+const policies=[{slug:'privacy',title:'Privacy notice',body:'This preview is not intended for live personal data. When launched, enquiry details will be used to respond to requests and manage related business communications. Retention periods, grievance contact and deletion-request process require confirmation before launch.'},{slug:'terms',title:'Terms of service',body:'Services will be governed by the mutually agreed scope, deliverables and payment terms. Final legal terms require review.'},{slug:'refund-policy',title:'Cancellation and refund policy',body:'No payments are accepted on this preview. Cancellation conditions and timelines require confirmation before payments launch.'},{slug:'delivery-policy',title:'Delivery policy',body:'Services and training are delivered according to the agreed scope and schedule. Final delivery terms require review.'},{slug:'pricing',title:'Pricing',body:'Pricing depends on agreed scope, duration and complexity. Request a consultation for a proposal.'}];
+export function getStaticPaths(){return policies.map(policy=>({params:{policy:policy.slug},props:{policy}}));}
+const {policy}=Astro.props;
+---
+<Layout title={policy.title}><h1>{policy.title}</h1><p class="panel">Draft for review — not final legal terms. No live payments or customer data should be submitted until approved.</p><p>{policy.body}</p></Layout>

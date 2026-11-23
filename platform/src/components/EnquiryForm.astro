@@ -1,0 +1,32 @@
+---
+import {envOf} from '../lib/runtime';
+import {questions} from '../lib/score';
+const {kind='contact'}=Astro.props;
+const env=envOf(Astro.locals);
+const siteKey=env.ENABLE_PUBLIC_FORMS==='true'?env.TURNSTILE_SITE_KEY:undefined;
+---
+{!siteKey?<p class="panel">Online submissions are not available on this preview until verification is configured.</p>:null}
+<form class="enquiry" method="post" action="/api/enquiry">
+<input type="hidden" name="kind" value={kind}/>
+{kind==='leak_check'&&<><label>Monthly lead volume<input name="monthlyLeads" required type="number" min="0" max="1000000"/></label>{questions.map(q=><label>{q[1]}<select name={q[0]} required><option value="">Choose an answer</option>{q.slice(2).map((o,i)=><option value={i}>{o}</option>)}</select></label>)}<button type="button" class="secondary" data-partial>Preview assessment</button><p data-partial-result aria-live="polite"></p></>}
+<label>Name<input name="name" required maxlength="120" autocomplete="name"/></label><label>Email<input name="email" type="email" required maxlength="254" autocomplete="email"/></label><label>Phone / WhatsApp<input name="phone" type="tel" required autocomplete="tel"/></label><label>Company or institution<input name="company" required maxlength="150" autocomplete="organization"/></label><label>Segment<select name="segment">{['edtech','coaching','study_abroad','college','creator','smb','corporate','other'].map(s=><option value={s}>{s.replaceAll('_',' ')}</option>)}</select></label>
+{kind==='college'||kind==='company'?<><label>Audience / team size<input name="audience"/></label><label>Preferred dates<input name="dates"/></label><label>Budget range<input name="budget"/></label></>:null}
+<label>What would you like to improve?<textarea name="message" maxlength="1000" rows="4"></textarea></label>
+<label class="trap" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"/></label>
+{['utm_source','utm_medium','utm_campaign','utm_content','utm_term','ref','landing','referrer'].map(k=><input type="hidden" name={k}/>)}
+<label><input type="checkbox" name="consent" value="yes" required/>I consent to processing my details to respond to this enquiry, as described in the <a href="/privacy">privacy notice</a>.</label>
+{siteKey&&<div class="cf-turnstile" data-sitekey={siteKey}></div>}
+<button disabled={!siteKey} type="submit">{kind==='leak_check'?'Get full assessment':'Send enquiry'}</button><div class="result" role="status" hidden data-result></div>
+</form>
+{siteKey&&<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+<script>
+import {scoreAnswers,questions} from '../lib/score';
+for(const form of document.querySelectorAll<HTMLFormElement>('form.enquiry')){
+const params=new URLSearchParams(location.search);
+for(const k of ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','ref','landing','referrer']){
+const el=form.elements.namedItem(k) as HTMLInputElement|null;if(el)el.value=k==='landing'?location.pathname:k==='referrer'?document.referrer:params.get(k)||'';
+}
+const partial=form.querySelector<HTMLElement>('[data-partial-result]');form.querySelector('[data-partial]')?.addEventListener('click',()=>{try{const f=new FormData(form),a=Object.fromEntries(questions.map(q=>[q[0],Number(f.get(q[0])||-1)]));const r=scoreAnswers(a,Number(f.get('monthlyLeads')));if(partial)partial.textContent='Initial assessment: '+r.band+'. Submit your details for recommendations.';}catch{if(partial)partial.textContent='Complete all assessment questions first.';}});
+form.addEventListener('submit',async e=>{e.preventDefault();const output=form.querySelector<HTMLElement>('[data-result]');const button=form.querySelector<HTMLButtonElement>('button[type=submit]');if(!output||!button)return;button.disabled=true;output.hidden=false;output.textContent='Submitting…';try{const r=await fetch(form.action,{method:'POST',body:new FormData(form)});const data=await r.json();if(!r.ok)throw Error(data.error||'Submission failed');output.textContent=data.result?'Score: '+data.result.score+'/100 — '+data.result.band+'. Illustrative leads at risk: '+data.result.risk+' per month (not a forecast). Recommendations: '+data.result.recommendations.map((x:{target:string})=>x.target).join('; '):'Thank you. Your enquiry has been recorded.';form.reset();}catch(error){output.textContent=error instanceof Error?error.message:'Please try again';}finally{button.disabled=false;(window as unknown as {turnstile?:{reset:()=>void}}).turnstile?.reset();}});
+}
+</script>

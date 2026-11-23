@@ -1,0 +1,4 @@
+---
+import Layout from '../../components/Layout.astro';import {cases} from '../../lib/content';export const prerender=true;
+---
+<Layout title="Case studies"><h1>Experience in action</h1><p>Examples from previous roles; not testimonials or new client results.</p><div class="tiles">{cases.map(c=><article><h3>{c.title}</h3><p>{c.result}</p><a href={'/case-studies/'+c.slug}>Read more</a></article>)}</div></Layout>

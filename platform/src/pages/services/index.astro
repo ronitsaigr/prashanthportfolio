@@ -1,0 +1,4 @@
+---
+import Layout from '../../components/Layout.astro';import {offers} from '../../lib/content';export const prerender=true;
+---
+<Layout title="Services"><h1>Services built around your business</h1><p class="lead">From finding revenue leaks to implementing reliable automation and running better operations.</p><div class="tiles">{offers.map(o=><article><h3>{o.name}</h3><p>{o.desc}</p><p class="muted">{o.time}</p><a href={'/services/'+o.slug}>Learn more</a></article>)}</div></Layout>

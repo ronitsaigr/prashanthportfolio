@@ -1,0 +1,7 @@
+# Release gates (preview first)
+- Cloudflare GitHub installation must explicitly authorize ronitsaigr/prashanthportfolio; build branch platform-phase-0, root platform, Worker prashanthportfolio.
+- Keep public forms disabled until legal review and Turnstile secret configured securely; verify sandbox with synthetic data. Never commit secrets.
+- Enable Cloudflare Zero Trust; protect /admin and /api/admin and configure ACCESS_TEAM_DOMAIN, ACCESS_AUD, ADMIN_EMAIL. App already fails closed.
+- Configure N8N_WEBHOOK_URL, N8N_SIGNING_SECRET, EMAIL_API_KEY, EMAIL_FROM, NOTIFY_EMAIL and BOOKING_URL in Worker runtime. Resend sender must be verified. Cron retries every minute and digest Monday 08:00 IST.
+- Cashfree replaces Razorpay. Sandbox order creation, server-side amount checks, verified success webhook reconciliation, partner code commission and certificate lookup implemented but not tested against Cashfree. Keep ENABLE_SANDBOX_CHECKOUT=false. Coupons, expired reservations/retry, waitlist, refunds, payment fulfilment, partner portal, certificate issuance and refund-safe commission lifecycle still require work. Do not use these routes for live money. No real payments enabled.
+- Verify all forms, duplicate contacts, CRM operations, emails, weekly digest, retries, mobile Lighthouse and authorization. No DNS changes until current zone and email records inventoried, preview accepted and rollback verified.

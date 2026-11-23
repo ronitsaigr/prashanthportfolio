@@ -1,0 +1,4 @@
+---
+import Layout from '../components/Layout.astro';export const prerender=true;
+---
+<Layout title="Demos"><h1>What automation looks like</h1><div class="tiles">{[['Lead handling','New lead → instant reply → owner assigned → follow-up'],['Payment reconciliation','Payment → verified reconciliation → receipt → onboarding'],['Call intelligence','Call notes → AI summary → CRM update → manager report']].map(([title,flow])=><article><h3>{title}</h3><p>{flow}</p><small>Illustrative workflow; recorded demonstration pending.</small></article>)}</div></Layout>

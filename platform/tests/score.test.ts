@@ -1,0 +1,2 @@
+import {describe,it,expect} from 'vitest';import {questions,scoreAnswers} from '../src/lib/score';
+describe('scorecard',()=>{it('scores maximum',()=>expect(scoreAnswers(Object.fromEntries(questions.map(q=>[q[0],3])),1000)).toMatchObject({score:100,band:'Tight',risk:0}));it('scores minimum',()=>expect(scoreAnswers(Object.fromEntries(questions.map(q=>[q[0],0])),1000)).toMatchObject({score:0,band:'Leaking',risk:300}));it('rejects incomplete answers',()=>expect(()=>scoreAnswers({},10)).toThrow());});

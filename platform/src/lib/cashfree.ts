@@ -1,0 +1,9 @@
+import type {Env} from './runtime';
+const encoder=new TextEncoder();
+export async function verifyCashfree(secret:string,timestamp:string,raw:string,signature:string){
+ if(!secret||!timestamp||!signature)return false;
+ try{const key=await crypto.subtle.importKey('raw',encoder.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['verify']);const bytes=Uint8Array.from(atob(signature),c=>c.charCodeAt(0));return await crypto.subtle.verify('HMAC',key,bytes,encoder.encode(timestamp+raw));}catch{return false;}
+}
+export function discountPaise(price:number,kind:'percent'|'flat',value:number){if(!Number.isSafeInteger(price)||price<0||!Number.isSafeInteger(value)||value<0||(kind==='percent'&&value>100))throw Error('Invalid discount');return Math.min(price,kind==='percent'?Math.floor(price*value/100):value);}
+export function commissionPaise(received:number,refunded:number,bps:number){if(![received,refunded,bps].every(Number.isSafeInteger)||received<0||refunded<0||refunded>received||bps<0||bps>10000)throw Error('Invalid commission');return Math.floor((received-refunded)*bps/10000);}
+export async function cashfreeSandbox(env:Env,path:string,body?:Record<string,unknown>){if(!env.CASHFREE_CLIENT_ID||!env.CASHFREE_CLIENT_SECRET||!env.CASHFREE_API_VERSION)throw Error('Cashfree sandbox not configured');if(!/^\/orders(?:\/[A-Za-z0-9_-]+(?:\/payments)?)?$/.test(path))throw Error('Invalid resource');const response=await fetch('https://sandbox.cashfree.com/pg'+path,{method:body?'POST':'GET',headers:{'content-type':'application/json','x-client-id':env.CASHFREE_CLIENT_ID,'x-client-secret':env.CASHFREE_CLIENT_SECRET,'x-api-version':env.CASHFREE_API_VERSION},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(10000)});if(!response.ok)throw Error('Cashfree sandbox request failed: '+response.status);return response.json();}
